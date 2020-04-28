@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.Stack;
 import java.io.IOException;
@@ -388,6 +389,10 @@ public class Game
         }
         if(finished == true)
         {
+            for (int j = 0; j < userInput.size(); j++)
+            {
+                System.out.println(userInput.get(j));
+            }
             try
             {
                 doc = new FileWriter("UserInputs.txt");
@@ -512,6 +517,8 @@ public class Game
             {
                 if(command.isUnknown()) {
                         System.out.println("Nesuprantu ką tu turi omenyje...");
+                        
+                        look();
                         return false;
                 }
 
