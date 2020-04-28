@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=Artifact
+comment0.text=\r\n\ Artiffacts\ is\ an\ object\ which\ is\ located\ within\ the\ rooms\ and\ players\ inventory.\ Some\ artifacts\ have\ some\ special\ abilities.\r\n\r\n\ @author\ Donatas\ Vasauskas\r\n\ @version\ 2019.12.11-01\r\n
+comment1.params=
+comment1.target=Artifact()
+comment1.text=\r\n\ Constructor\ for\ Artifact\ with\ specified\ values.\r\n
+comment2.params=artifactName\ descriptionArtifact\ weight
+comment2.target=Artifact(java.lang.String,\ java.lang.String,\ int)
+comment2.text=\r\n\ Constructor\ for\ Artifact\ with\ user\ defined\ values.\r\n\ @param\ artiffactName\ is\ a\ String\ which\ names\ the\ artifact.\r\n\ @param\ descriptionArtifact\ is\ a\ String\ description\ of\ the\ artifact.\r\n\ @param\ weight\ is\ integer\ which\ specifies\ how\ heavy\ is\ an\ artifact.\r\n
+comment3.params=
+comment3.target=java.lang.String\ getDescriptionArtifact()
+comment3.text=\r\n\ This\ method\ gives\ description\ of\ the\ artifact\ into\ a\ string\r\n\ @return\ gives\ specific\ string\ for\ each\ scenario\r\n
+comment4.params=
+comment4.target=java.lang.String\ getArtifactName()
+comment4.text=\r\n\ This\ method\ gives\ name\ of\ the\ artifact\ into\ the\ string\r\n
+comment5.params=
+comment5.target=int\ getWeight()
+comment5.text=\r\n\ This\ method\ gets\ artifacts\ weight\r\n\ @return\ weight\ returns\ artifacts\ weight\ in\ integer\r\n
+comment6.params=
+comment6.target=java.lang.String\ getDescription()
+comment6.text=\r\n\ This\ method\ gets\ artifacts\ description\ in\ the\ string.\r\n
+numComments=7

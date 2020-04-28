@@ -1,0 +1,17 @@
+#Tue Apr 14 20:58:43 EDT 2020
+bluej.teamsettings.groupname=
+bluej.teamsettings.ignore1=.*\\.class
+bluej.teamsettings.yourName=Donatas
+bluej.teamsettings.git.server=github.com
+bluej.teamsettings.yourEmail=donciukaso@yahoo.com
+bluej.teamsettings.git.repositoryPrefix=/DonatelloLTU/ZuulLithuanian
+bluej.teamsettings.vcs=git
+bluej.teamsettings.user=DonatelloLTU
+bluej.teamsettings.ignore3=team\\.defs
+bluej.teamsettings.ignore2=bluej\\.pkh
+bluej.teamsettings.ignore5=.*\\~
+bluej.teamsettings.ignore4=.*\\.ctxt
+bluej.teamsettings.ignore7=.*\\\#backup
+bluej.teamsettings.ignore6=.*\\\#
+bluej.teamsettings.git.protocol=https
+bluej.teamsettings.ignore8=\\.DS_Store
