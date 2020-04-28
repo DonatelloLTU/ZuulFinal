@@ -7,6 +7,7 @@ This project is part of the material for the book
    Sixth edition
    David J. Barnes and Michael Kölling
    Pearson Education, 2016
+   Edited by: Donatas Vasauskas
 
 This project is a simple framework for an adventure game. In this version,
 it has a few rooms and the ability for a player to walk between these rooms.
