@@ -137,7 +137,7 @@ public class GUI extends JFrame {
 		lietuviu1.setForeground(new Color(0,0,0));
 		lietuviu1.setEnabled(true);
 		lietuviu1.setFont(new Font("sansserif",0,12));
-		lietuviu1.setText("Lietuviu");
+		lietuviu1.setText("Lietuvių");
 		lietuviu1.setVisible(true);
 		lietuviu1.addMouseListener(new MouseAdapter() 
 		{
@@ -154,7 +154,7 @@ public class GUI extends JFrame {
 		north1.setForeground(new Color(0,0,0));
 		north1.setEnabled(true);
 		north1.setFont(new Font("sansserif",0,12));
-		north1.setText("North/�iaur?");
+		north1.setText("North/Šiaurė");
 		north1.setVisible(true);
 		north1.addMouseListener(new MouseAdapter() 
 		{
@@ -205,7 +205,7 @@ public class GUI extends JFrame {
 		south1.setForeground(new Color(0,0,0));
 		south1.setEnabled(true);
 		south1.setFont(new Font("sansserif",0,12));
-		south1.setText("South/Pietus");
+		south1.setText("South/Pietūs");
 		south1.setVisible(true);
 		south1.addMouseListener(new MouseAdapter() 
 		{
