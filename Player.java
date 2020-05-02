@@ -15,7 +15,7 @@ public class Player
     private ArrayList<Artifact> inventory;
     private int carryWeight;
     private String name;
-    private Game english;
+    private GUI english;
     /**
      * Constructor for class Player with defined values
      * @param name is a String wih user defined name.

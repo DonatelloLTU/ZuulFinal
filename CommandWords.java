@@ -20,7 +20,7 @@ public class CommandWords
     private static final String[] validCommandsLt = {
         "english", "lietuviu", "keliauti", "baigti", "pagalba", "paimti", "padeti", "ziureti", "atgal", "valgyti", "ikrauti", "iskrauti", "atidaryti"
     };
-    private Game english;
+    private GUI english;
     /**
      * Constructor - initialise the command words.
      */
@@ -73,16 +73,16 @@ public class CommandWords
        if(english.english())
        {
            for(String command: validCommands) {
-                System.out.print(command + "  ");
+                english.appendText(command + "  ");
            }
-            System.out.println();
+            english.appendText("\n");
        }
        else
        {
            for(String command: validCommandsLt) {
-                System.out.print(command + "  ");
+                english.appendText(command + "  ");
            }
-            System.out.println();
+            english.appendText("\n");
        }
     }
     

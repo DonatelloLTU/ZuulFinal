@@ -24,7 +24,7 @@ public class Room
     private boolean hasArtifact;
     private int teleportation;
     
-    private Game game;
+    private GUI game;
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or

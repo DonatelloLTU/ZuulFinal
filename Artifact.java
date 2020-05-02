@@ -10,7 +10,7 @@ public class Artifact
     private String artifactName;
     private String descriptionArtifact;
     private int weight;
-    private Game language;
+    private GUI language;
     
     /**
      * Constructor for Artifact with specified values.
