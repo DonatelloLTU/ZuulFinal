@@ -22,15 +22,15 @@ import java.io.*;
 import java.util.*;
 public class GUI extends JFrame {
 
-	private JMenuBar menuBar;
-	private JTextField commandField;
-	private JPanel inventory1;
-	private JTextArea textarea1;
-	private JPanel mainPanel;
-	private JButton east1, north1, south1, west1, take1, teleport1, explore1, leave1, lietuviu1, help1, english1,
-	back1,mudding1,moonshine1, eat1 ;
-	
-	private Parser parser;
+    private JMenuBar menuBar;
+    private JTextField commandField;
+    private JPanel inventory1;
+    private JTextArea textarea1;
+    private JPanel mainPanel;
+    protected JButton east1, north1, south1, west1, take1, teleport1, explore1, leave1, lietuviu1, help1, english1,
+    back1,mudding1,moonshine1, eat1 ;
+    
+    private Parser parser;
         private Room currentRoom;
         Room pacificOcean, atlanticOcean, indianOcean, europe, america, australia, asia, africa, explore, dive, fight, diversion, divePacific, diveAtlantic, climbIce, diveUnder, exploreAmerica,
         mud, moonshine, eat, exploreEurope, drink, france, exploreAsia, bathroom, wall, exploreAustralia, box, erwin, exploreAfrica, desert, egypt, exploreIndia, boat, shiny, home,
@@ -44,544 +44,754 @@ public class GUI extends JFrame {
         private Room charging;
         private static boolean english = false;
         private Command command;
-	 
-	public GUI()
-	{
+     
+        boolean finished = false;
+    public GUI()
+    {
 
-		this.setTitle("GUI");
-		this.setSize(600,500);
-		
-		generateMenu();
-		this.setJMenuBar(menuBar);
+        this.setTitle("GUI");
+        this.setSize(600,500);
+        
+        generateMenu();
+        this.setJMenuBar(menuBar);
 
-		JPanel contentPane = new JPanel(null);
-		contentPane.setPreferredSize(new Dimension(600,500));
-		contentPane.setBackground(new Color(192,192,192));
+        JPanel contentPane = new JPanel(null);
+        contentPane.setPreferredSize(new Dimension(600,500));
+        contentPane.setBackground(new Color(192,192,192));
 
-		commandField = new JTextField();
-		commandField.setBounds(5,385,110,35);
-		commandField.setBackground(new Color(255,255,255));
-		commandField.setForeground(new Color(0,0,0));
-		commandField.setEnabled(true);
-		commandField.setFont(new Font("sansserif",0,12));
-		commandField.setText("");
-		commandField.setVisible(true);
-		
-		mainPanel = new JPanel(null);
-		mainPanel.setBorder(BorderFactory.createEtchedBorder(1));
-		mainPanel.setBounds(5,15,590,300);
-		mainPanel.setBackground(new Color(214,217,223));
-		mainPanel.setForeground(new Color(0,0,0));
-		mainPanel.setEnabled(true);
-		mainPanel.setFont(new Font("sansserif",0,12));
-		mainPanel.setVisible(true);
-		
-		textarea1 = new JTextArea();
-		textarea1.setBounds(5,5,585,150);
-		textarea1.setBackground(new Color(255,255,255));
-		textarea1.setForeground(new Color(0,0,0));
-		textarea1.setEnabled(true);
-		textarea1.setFont(new Font("sansserif",0,12));
-		textarea1.setText("");
-		textarea1.setBorder(BorderFactory.createBevelBorder(1));
-		textarea1.setVisible(false);
-		
-		mainPanel.add(textarea1);
-		
-		inventory1 = new JPanel(null);
-		inventory1.setBorder(BorderFactory.createEtchedBorder(1));
-		inventory1.setBounds(5,320,350,50);
-		inventory1.setBackground(new Color(214,217,223));
-		inventory1.setForeground(new Color(0,0,0));
-		inventory1.setEnabled(true);
-		inventory1.setFont(new Font("sansserif",0,12));
-		inventory1.setVisible(true);
-		
-		help1 = new JButton();
-		help1.setBounds(5,460,110,35);
-		help1.setBackground(new Color(214,217,223));
-		help1.setForeground(new Color(0,0,0));
-		help1.setEnabled(true);
-		help1.setFont(new Font("sansserif",0,12));
-		help1.setText("Help/Pagalba");
-		help1.setVisible(true);
-		help1.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseClicked(MouseEvent evt) 
-			{
-			    help1(evt);
-			}
-		}
-		);
+        commandField = new JTextField();
+        commandField.setBounds(5,385,110,35);
+        commandField.setBackground(new Color(255,255,255));
+        commandField.setForeground(new Color(0,0,0));
+        commandField.setEnabled(true);
+        commandField.setFont(new Font("sansserif",0,12));
+        commandField.setText("");
+        commandField.setVisible(false);
+        
+        mainPanel = new JPanel(null);
+        mainPanel.setBorder(BorderFactory.createEtchedBorder(1));
+        mainPanel.setBounds(5,15,590,300);
+        mainPanel.setBackground(new Color(214,217,223));
+        mainPanel.setForeground(new Color(0,0,0));
+        mainPanel.setEnabled(true);
+        mainPanel.setFont(new Font("sansserif",0,12));
+        mainPanel.setVisible(true);
+        
+        textarea1 = new JTextArea();
+        textarea1.setBounds(5,5,585,150);
+        textarea1.setBackground(new Color(255,255,255));
+        textarea1.setForeground(new Color(0,0,0));
+        textarea1.setEnabled(true);
+        textarea1.setFont(new Font("sansserif",0,12));
+        textarea1.setText("");
+        textarea1.setBorder(BorderFactory.createBevelBorder(1));
+        textarea1.setVisible(false);
+        
+        mainPanel.add(textarea1);
+        
+        inventory1 = new JPanel(null);
+        inventory1.setBorder(BorderFactory.createEtchedBorder(1));
+        inventory1.setBounds(5,320,350,50);
+        inventory1.setBackground(new Color(214,217,223));
+        inventory1.setForeground(new Color(0,0,0));
+        inventory1.setEnabled(true);
+        inventory1.setFont(new Font("sansserif",0,12));
+        inventory1.setVisible(false);
+        
+        help1 = new JButton();
+        help1.setBounds(5,460,110,35);
+        help1.setBackground(new Color(214,217,223));
+        help1.setForeground(new Color(0,0,0));
+        help1.setEnabled(true);
+        help1.setFont(new Font("sansserif",0,12));
+        help1.setText("Help/Pagalba");
+        help1.setVisible(true);
+        help1.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent evt) 
+            {
+                help1(evt);
+            }
+        }
+        );
 
-		english1 = new JButton();
-		english1.setBounds(150,135,110,35);
-		english1.setBackground(new Color(214,217,223));
-		english1.setForeground(new Color(0,0,0));
-		english1.setEnabled(true);
-		english1.setFont(new Font("sansserif",0,12));
-		english1.setText("English");
-		english1.setVisible(true);
-		english1.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseClicked(MouseEvent evt) 
-			{
-			    english1(evt);
-			}
-		}
-		);
+        english1 = new JButton();
+        english1.setBounds(150,135,110,35);
+        english1.setBackground(new Color(214,217,223));
+        english1.setForeground(new Color(0,0,0));
+        english1.setEnabled(true);
+        english1.setFont(new Font("sansserif",0,12));
+        english1.setText("English");
+        english1.setVisible(true);
+        english1.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent evt) 
+            {
+                english1(evt);
+            }
+        }
+        );
 
-		lietuviu1 = new JButton();
-		lietuviu1.setBounds(330,135,110,35);
-		lietuviu1.setBackground(new Color(214,217,223));
-		lietuviu1.setForeground(new Color(0,0,0));
-		lietuviu1.setEnabled(true);
-		lietuviu1.setFont(new Font("sansserif",0,12));
-		lietuviu1.setText("Lietuvių");
-		lietuviu1.setVisible(true);
-		lietuviu1.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseClicked(MouseEvent evt) 
-			{
-			    lietuviu1(evt);
-			}
-		}
-		);
+        lietuviu1 = new JButton();
+        lietuviu1.setBounds(330,135,110,35);
+        lietuviu1.setBackground(new Color(214,217,223));
+        lietuviu1.setForeground(new Color(0,0,0));
+        lietuviu1.setEnabled(true);
+        lietuviu1.setFont(new Font("sansserif",0,12));
+        lietuviu1.setText("Lietuvių");
+        lietuviu1.setVisible(true);
+        lietuviu1.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent evt) 
+            {
+                lietuviu1(evt);
+            }
+        }
+        );
 
-		north1 = new JButton();
-		north1.setBounds(390,350,110,35);
-		north1.setBackground(new Color(214,217,223));
-		north1.setForeground(new Color(0,0,0));
-		north1.setEnabled(true);
-		north1.setFont(new Font("sansserif",0,12));
-		north1.setText("North/Šiaurė");
-		north1.setVisible(true);
-		north1.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseClicked(MouseEvent evt) 
-			{
-			    north1(evt);
-			}
-		}
-		);
+        north1 = new JButton();
+        north1.setBounds(390,350,110,35);
+        north1.setBackground(new Color(214,217,223));
+        north1.setForeground(new Color(0,0,0));
+        north1.setEnabled(true);
+        north1.setFont(new Font("sansserif",0,12));
+        north1.setText("North/Šiaurė");
+        north1.setVisible(false);
+        north1.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent evt) 
+            {
+                north1(evt);
+            }
+        }
+        );
 
-		east1 = new JButton();
-		east1.setBounds(460,385,110,35);
-		east1.setBackground(new Color(214,217,223));
-		east1.setForeground(new Color(0,0,0));
-		east1.setEnabled(true);
-		east1.setFont(new Font("sansserif",0,12));
-		east1.setText("East/Rytai");
-		east1.setVisible(true);
-		east1.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseClicked(MouseEvent evt) 
-			{
-			    east1(evt);
-			}
-		}
-		);
-		
-		eat1 = new JButton();
-		eat1.setBounds(460,385,110,35);
-		eat1.setBackground(new Color(214,217,223));
-		eat1.setForeground(new Color(0,0,0));
-		eat1.setEnabled(true);
-		eat1.setFont(new Font("sansserif",0,12));
-		eat1.setText("Option 3");
-		eat1.setVisible(false);
-		eat1.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseClicked(MouseEvent evt) 
-			{
-			    eat1(evt);
-			}
-		}
-		);
-		
-		south1 = new JButton();
-		south1.setBounds(390,420,110,35);
-		south1.setBackground(new Color(214,217,223));
-		south1.setForeground(new Color(0,0,0));
-		south1.setEnabled(true);
-		south1.setFont(new Font("sansserif",0,12));
-		south1.setText("South/Pietūs");
-		south1.setVisible(true);
-		south1.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseClicked(MouseEvent evt) 
-			{
-			    south1(evt);
-			}
-		}
-		);
-		
-		moonshine1 = new JButton();
-		moonshine1.setBounds(390,420,110,35);
-		moonshine1.setBackground(new Color(214,217,223));
-		moonshine1.setForeground(new Color(0,0,0));
-		moonshine1.setEnabled(true);
-		moonshine1.setFont(new Font("sansserif",0,12));
-		moonshine1.setText("Option 2");
-		moonshine1.setVisible(false);
-		moonshine1.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseClicked(MouseEvent evt) 
-			{
-			    moonshine1(evt);
-			}
-		}
-		);
-		
-		west1 = new JButton();
-		west1.setBounds(330,385,110,35);
-		west1.setBackground(new Color(214,217,223));
-		west1.setForeground(new Color(0,0,0));
-		west1.setEnabled(true);
-		west1.setFont(new Font("sansserif",0,12));
-		west1.setText("West/Vakarai");
-		west1.setVisible(true);
-		west1.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseClicked(MouseEvent evt) 
-			{
-			    west1(evt);
-			}
-		}
-		);
-		
-		mudding1 = new JButton();
-		mudding1.setBounds(330,385,110,35);
-		mudding1.setBackground(new Color(214,217,223));
-		mudding1.setForeground(new Color(0,0,0));
-		mudding1.setEnabled(true);
-		mudding1.setFont(new Font("sansserif",0,12));
-		mudding1.setText("Option 1");
-		mudding1.setVisible(false);
-		mudding1.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseClicked(MouseEvent evt) 
-			{
-			    mudding1(evt);
-			}
-		}
-		);
-		
-		back1 = new JButton();
-		back1.setBounds(460,460,110,35);
-		back1.setBackground(new Color(214,217,223));
-		back1.setForeground(new Color(0,0,0));
-		back1.setEnabled(true);
-		back1.setFont(new Font("sansserif",0,12));
-		back1.setText("Back/Atgal");
-		back1.setVisible(true);
-		back1.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseClicked(MouseEvent evt) 
-			{
-			    back1(evt);
-			}
-		}
-		);
-		
-		leave1 = new JButton();
-		leave1.setBounds(330,460,110,35);
-		leave1.setBackground(new Color(214,217,223));
-		leave1.setForeground(new Color(0,0,0));
-		leave1.setEnabled(true);
-		leave1.setFont(new Font("sansserif",0,12));
-		leave1.setText("Leave/Iseiti");
-		leave1.setVisible(true);
-		leave1.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseClicked(MouseEvent evt) 
-			{
-			    leave1(evt);
-			}
-		}
-		);
-		
-		explore1 = new JButton();
-		explore1.setBounds(330,460,110,35);
-		explore1.setBackground(new Color(214,217,223));
-		explore1.setForeground(new Color(0,0,0));
-		explore1.setEnabled(true);
-		explore1.setFont(new Font("sansserif",0,12));
-		explore1.setText("Explore/Aplankyti");
-		explore1.setVisible(false);
-		explore1.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseClicked(MouseEvent evt) 
-			{
-			    explore1(evt);
-			}
-		}
-		);
+        east1 = new JButton();
+        east1.setBounds(460,385,110,35);
+        east1.setBackground(new Color(214,217,223));
+        east1.setForeground(new Color(0,0,0));
+        east1.setEnabled(true);
+        east1.setFont(new Font("sansserif",0,12));
+        east1.setText("East/Rytai");
+        east1.setVisible(false);
+        east1.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent evt) 
+            {
+                east1(evt);
+            }
+        }
+        );
+        
+        eat1 = new JButton();
+        eat1.setBounds(460,385,110,35);
+        eat1.setBackground(new Color(214,217,223));
+        eat1.setForeground(new Color(0,0,0));
+        eat1.setEnabled(true);
+        eat1.setFont(new Font("sansserif",0,12));
+        eat1.setText("Option 3");
+        eat1.setVisible(false);
+        eat1.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent evt) 
+            {
+                eat1(evt);
+            }
+        }
+        );
+        
+        south1 = new JButton();
+        south1.setBounds(390,420,110,35);
+        south1.setBackground(new Color(214,217,223));
+        south1.setForeground(new Color(0,0,0));
+        south1.setEnabled(true);
+        south1.setFont(new Font("sansserif",0,12));
+        south1.setText("South/Pietūs");
+        south1.setVisible(false);
+        south1.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent evt) 
+            {
+                south1(evt);
+            }
+        }
+        );
+        
+        moonshine1 = new JButton();
+        moonshine1.setBounds(390,420,110,35);
+        moonshine1.setBackground(new Color(214,217,223));
+        moonshine1.setForeground(new Color(0,0,0));
+        moonshine1.setEnabled(true);
+        moonshine1.setFont(new Font("sansserif",0,12));
+        moonshine1.setText("Option 2");
+        moonshine1.setVisible(false);
+        moonshine1.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent evt) 
+            {
+                moonshine1(evt);
+            }
+        }
+        );
+        
+        west1 = new JButton();
+        west1.setBounds(330,385,110,35);
+        west1.setBackground(new Color(214,217,223));
+        west1.setForeground(new Color(0,0,0));
+        west1.setEnabled(true);
+        west1.setFont(new Font("sansserif",0,12));
+        west1.setText("West/Vakarai");
+        west1.setVisible(false);
+        west1.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent evt) 
+            {
+                west1(evt);
+            }
+        }
+        );
+        
+        mudding1 = new JButton();
+        mudding1.setBounds(330,385,110,35);
+        mudding1.setBackground(new Color(214,217,223));
+        mudding1.setForeground(new Color(0,0,0));
+        mudding1.setEnabled(true);
+        mudding1.setFont(new Font("sansserif",0,12));
+        mudding1.setText("Option 1");
+        mudding1.setVisible(false);
+        mudding1.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent evt) 
+            {
+                mudding1(evt);
+            }
+        }
+        );
+        
+        back1 = new JButton();
+        back1.setBounds(460,460,110,35);
+        back1.setBackground(new Color(214,217,223));
+        back1.setForeground(new Color(0,0,0));
+        back1.setEnabled(true);
+        back1.setFont(new Font("sansserif",0,12));
+        back1.setText("Back/Atgal");
+        back1.setVisible(false);
+        back1.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent evt) 
+            {
+                back1(evt);
+            }
+        }
+        );
+        
+        leave1 = new JButton();
+        leave1.setBounds(330,460,110,35);
+        leave1.setBackground(new Color(214,217,223));
+        leave1.setForeground(new Color(0,0,0));
+        leave1.setEnabled(true);
+        leave1.setFont(new Font("sansserif",0,12));
+        leave1.setText("Leave/Iseiti");
+        leave1.setVisible(false);
+        leave1.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent evt) 
+            {
+                leave1(evt);
+            }
+        }
+        );
+        
+        explore1 = new JButton();
+        explore1.setBounds(330,460,110,35);
+        explore1.setBackground(new Color(214,217,223));
+        explore1.setForeground(new Color(0,0,0));
+        explore1.setEnabled(true);
+        explore1.setFont(new Font("sansserif",0,12));
+        explore1.setText("Explore/Aplankyti");
+        explore1.setVisible(false);
+        explore1.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent evt) 
+            {
+                explore1(evt);
+            }
+        }
+        );
 
-		take1 = new JButton();
-		take1.setBounds(130,385,110,35);
-		take1.setBackground(new Color(214,217,223));
-		take1.setForeground(new Color(0,0,0));
-		take1.setEnabled(true);
-		take1.setFont(new Font("sansserif",0,12));
-		take1.setText("Take/Paimti");
-		take1.setVisible(true);
-		take1.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseClicked(MouseEvent evt) 
-			{
-			    take1(evt);
-			}
-		}
-		);
+        take1 = new JButton();
+        take1.setBounds(130,385,110,35);
+        take1.setBackground(new Color(214,217,223));
+        take1.setForeground(new Color(0,0,0));
+        take1.setEnabled(true);
+        take1.setFont(new Font("sansserif",0,12));
+        take1.setText("Take/Paimti");
+        take1.setVisible(false);
+        take1.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent evt) 
+            {
+                take1(evt);
+            }
+        }
+        );
 
-		teleport1 = new JButton();
-		teleport1.setBounds(130,460,110,35);
-		teleport1.setBackground(new Color(214,217,223));
-		teleport1.setForeground(new Color(0,0,0));
-		teleport1.setEnabled(true);
-		teleport1.setFont(new Font("sansserif",0,12));
-		teleport1.setText("Teleport/Teleportuoti");
-		teleport1.setVisible(true);
-		teleport1.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseClicked(MouseEvent evt) 
-			{
-			    teleport1(evt);
-			}
-		}
-		);
+        teleport1 = new JButton();
+        teleport1.setBounds(130,460,110,35);
+        teleport1.setBackground(new Color(214,217,223));
+        teleport1.setForeground(new Color(0,0,0));
+        teleport1.setEnabled(true);
+        teleport1.setFont(new Font("sansserif",0,12));
+        teleport1.setText("Teleport/Teleportuoti");
+        teleport1.setVisible(false);
+        teleport1.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent evt) 
+            {
+                teleport1(evt);
+            }
+        }
+        );
 
-		contentPane.add(commandField);
-		
-		mainPanel.add(english1);
-		mainPanel.add(lietuviu1);
-		
-		contentPane.add(help1);
-		contentPane.add(inventory1);
-		contentPane.add(mainPanel);
-		
-		contentPane.add(leave1);
-		contentPane.add(explore1);
-		contentPane.add(north1);
-		contentPane.add(east1);
-		contentPane.add(south1);
-		contentPane.add(west1);
-		contentPane.add(back1);
-		contentPane.add(teleport1);
-		
-		contentPane.add(take1);
-		contentPane.add(mudding1);
-		contentPane.add(moonshine1);
-		contentPane.add(eat1);
+        contentPane.add(commandField);
+        
+        mainPanel.add(english1);
+        mainPanel.add(lietuviu1);
+        
+        contentPane.add(help1);
+        contentPane.add(inventory1);
+        contentPane.add(mainPanel);
+        
+        contentPane.add(leave1);
+        contentPane.add(explore1);
+        contentPane.add(north1);
+        contentPane.add(east1);
+        contentPane.add(south1);
+        contentPane.add(west1);
+        contentPane.add(back1);
+        contentPane.add(teleport1);
+        
+        contentPane.add(take1);
+        contentPane.add(mudding1);
+        contentPane.add(moonshine1);
+        contentPane.add(eat1);
 
-		this.add(contentPane);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLocationRelativeTo(null);
-		this.pack();
-		this.setVisible(true);
-		
-		createRooms();
+        this.add(contentPane);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.pack();
+        this.setVisible(true);
+        
+        createRooms();
                 parser = new Parser();
                 turns = 30;
-	}
-	
-	private void printTextOnPanel (ActionEvent evt) 
-	{
-	    
-	}
-	
-	private void leave1 (MouseEvent evt) 
-	{
-	    command = new Command("go", "leave");
-	    leave1.setVisible(false);
-	    explore1.setVisible(true);
-	    processCommand(command);
-	}
-	
-	private void explore1 (MouseEvent evt) 
-	{
-	    command = new Command("go", "explore");
-	    
-	    processCommand(command);
-	    west1.setVisible(false);
-	    south1.setVisible(false);
-	    east1.setVisible(false);
-	    explore1.setVisible(false);
-	    north1.setVisible(false);
-	    moonshine1.setVisible(true);
-	    eat1.setVisible(true);
-	    mudding1.setVisible(true);
-	}
-	
-	private void north1 (MouseEvent evt) 
-	{
-	    command = new Command("go", "north");
-	    
-	    processCommand(command);
-	}
-	
-	private void mudding1 (MouseEvent evt) 
-	{
-	    if (player.getCurrentRoom() == exploreAmerica)
-	    {
-	        
-	        command = new Command("go", "mudding");
-	    
-	        processCommand(command);
-	    }
-	    if (player.getCurrentRoom() == diveAtlantic)
-	    {
-	        
-	        command = new Command("go", "climb");
-	    
-	        processCommand(command);
-	    }
-	}
-	
-	private void moonshine1 (MouseEvent evt) 
-	{
-	   if (player.getCurrentRoom() == exploreAmerica)
-	    {
-	        
-	        command = new Command("go", "moonshine");
-	    
-	        processCommand(command);
-	    }
-	    if (player.getCurrentRoom() == diveAtlantic)
-	    {
-	        
-	        command = new Command("go", "dive");
-	    
-	        processCommand(command);
-	    }
-	}
-	
-	private void eat1 (MouseEvent evt) 
-	{
-	   if (player.getCurrentRoom() == exploreAmerica)
-	    {
-	        
-	        command = new Command("go", "eat");
-	    
-	        processCommand(command);
-	    }
-	   if (player.getCurrentRoom() == diveAtlantic)
-	    {
-	        
-	        command = new Command("go", "swim");
-	    
-	        processCommand(command);
-	    }
-	}
-	
-	private void east1 (MouseEvent evt) 
-	{
-	    command = new Command("go", "east");
-	    
-	    processCommand(command);
-	}
-	
-	private void south1 (MouseEvent evt) 
-	{
-	    command = new Command("go", "south");
-	    
-	    processCommand(command);
-	}
-	
-	private void west1 (MouseEvent evt) 
-	{
-	    command = new Command("go", "west");
-	    
-	    processCommand(command);
-	}
-	
-	private void english1 (MouseEvent evt) 
-	{
-		player = new Player("Default");
+    }
+    
+    private void printTextOnPanel (ActionEvent evt) 
+    {
+        
+    }
+    
+    private void leave1 (MouseEvent evt) 
+    {
+        if( english == true)
+        {
+            command = new Command("go", "leave");
+            leave1.setVisible(false);
+            explore1.setVisible(true);
+            north1.setVisible(true);
+            east1.setVisible(true);
+            south1.setVisible(true);
+            west1.setVisible(true);
+            back1.setVisible(true);
+            processCommand(command);
+            
+        }
+        else
+        {
+            command = new Command("keliauti", "iseiti");
+            leave1.setVisible(false);
+            explore1.setVisible(true);
+            north1.setVisible(true);
+            east1.setVisible(true);
+            south1.setVisible(true);
+            west1.setVisible(true);
+            back1.setVisible(true);
+            processCommand(command);
+        }
+    }
+    
+    private void explore1 (MouseEvent evt) 
+    {
+        if(english == true)
+        {
+            command = new Command("go", "explore");
+        
+            processCommand(command);
+            west1.setVisible(false);
+            south1.setVisible(false);
+            east1.setVisible(false);
+            explore1.setVisible(false);
+            north1.setVisible(false);
+            moonshine1.setVisible(true);
+            eat1.setVisible(true);
+            mudding1.setVisible(true);
+        }
+        else
+        {
+            command = new Command("keliauti", "lankyti");
+        
+            processCommand(command);
+            west1.setVisible(false);
+            south1.setVisible(false);
+            east1.setVisible(false);
+            explore1.setVisible(false);
+            north1.setVisible(false);
+            moonshine1.setVisible(true);
+            eat1.setVisible(true);
+            mudding1.setVisible(true);
+        }
+    }
+    
+    private void north1 (MouseEvent evt) 
+    {
+        if(english == true)
+        {
+            command = new Command("go", "north");
+        }
+        else
+        {
+            command = new Command("keliauti", "siaure");
+        }
+            processCommand(command);
+    }
+    
+    private void mudding1 (MouseEvent evt) 
+    {
+            if (player.getCurrentRoom() == exploreAmerica)
+            {
+                command = new Command("go", "mudding");
+            }
+            if (player.getCurrentRoom() == diveAtlantic)
+            {
+            
+                command = new Command("go", "climb");
+        
+            }
+            if (player.getCurrentRoom() == divePacific)
+            {
+            
+                command = new Command("go", "diversion");
+        
+            }
+            if (player.getCurrentRoom() == nertiRamusis)
+            {
+                command = new Command("keliauti", "diversija");
+            }
+            if (player.getCurrentRoom() == nertiAtlanta)
+            {
+                command = new Command("keliauti", "lipti");
+            }
+            if (player.getCurrentRoom() == aplankytiAmerika)
+            {
+                command = new Command("keliauti", "murzintis");
+            }
+            if (player.getCurrentRoom() == exploreEurope)
+            {
+                command = new Command("go", "russia");
+            }
+            if (player.getCurrentRoom() == aplankytiEuropa)
+            {
+                command = new Command("keliauti", "rusijon");
+            }
+            if (player.getCurrentRoom() == exploreAsia)
+            {
+                command = new Command("go", "bathroom");
+            }
+            if (player.getCurrentRoom() == aplankytiAzija)
+            {
+                command = new Command("keliauti", "tuoleta");
+            }
+            if (player.getCurrentRoom() == exploreAustralia)
+            {
+                command = new Command("go", "box");
+            }
+            if (player.getCurrentRoom() == aplankytiAustralija)
+            {
+                command = new Command("keliauti", "boksuotis");
+            }
+            if (player.getCurrentRoom() == exploreAfrica)
+            {
+                command = new Command("go", "desert");
+            }
+            if (player.getCurrentRoom() == aplankytiAfrika)
+            {
+                command = new Command("keliauti", "per-dykuma");
+            }
+            if (player.getCurrentRoom() == aplankytiIndija)
+            {
+                command = new Command("keliauti", "laivan");
+            }
+            if (player.getCurrentRoom() == exploreIndia)
+            {
+                command = new Command("go", "boat");
+            }
+            take1.setVisible(true);
+            processCommand(command);
+        
+    }
+    
+    private void moonshine1 (MouseEvent evt) 
+    {
+       if (player.getCurrentRoom() == exploreAmerica)
+        {
+            
+            command = new Command("go", "moonshine");
+        
+            processCommand(command);
+        }
+        if (player.getCurrentRoom() == nertiRamusis)
+            {
+                command = new Command("keliauti", "kovoti");
+            }
+       if (player.getCurrentRoom() == divePacific)
+       {
+           command = new Command("go", "fight");
+       }
+       if (player.getCurrentRoom() == nertiAtlanta)
+       {
+           command = new Command("keliauti", "plaukiant");
+       }
+       if (player.getCurrentRoom() == aplankytiAmerika)
+       {
+           command = new Command("keliauti", "prigerti");
+       }
+       if (player.getCurrentRoom() == diveAtlantic)
+        {
+            
+            command = new Command("go", "dive");
+        
+            
+        }
+       if (player.getCurrentRoom() == exploreEurope)
+       {
+           command = new Command("go", "france");
+       }
+       if (player.getCurrentRoom() == aplankytiEuropa)
+       {
+           command = new Command("keliauti", "prancuzijon");
+       }
+       if (player.getCurrentRoom() == exploreAsia)
+       {
+           command = new Command("go", "wall");
+       }
+       if (player.getCurrentRoom() == aplankytiAzija)
+       {
+           command = new Command("keliauti", "prie-sienos");
+       }
+       if (player.getCurrentRoom() == exploreAustralia)
+       {
+           command = new Command("go", "swamps");
+       }
+       if (player.getCurrentRoom() == aplankytiAustralija)
+       {
+           command = new Command("keliauti", "per-pelkes");
+       }
+       if (player.getCurrentRoom() == exploreAfrica)
+       {
+           command = new Command("go", "egypt");
+       }
+       if (player.getCurrentRoom() == aplankytiAfrika)
+       {
+           command = new Command("keliauti", "egiptas");
+       }
+       if (player.getCurrentRoom() == exploreIndia)
+       {
+           command = new Command("go", "shiny");
+       }
+       if (player.getCurrentRoom() == aplankytiIndija)
+       {
+           command = new Command("keliauti", "prie-blizgucio");
+       }
+        processCommand(command);
+    }
+    
+    private void eat1 (MouseEvent evt) 
+    {
+       if (player.getCurrentRoom() == exploreAmerica)
+        {
+            
+            command = new Command("go", "eat");
+        
+            processCommand(command);
+        }
+       if (player.getCurrentRoom() == diveAtlantic)
+        {
+            
+            command = new Command("go", "swim");
+        
+            processCommand(command);
+        }
+    }
+    
+    private void east1 (MouseEvent evt) 
+    {
+        if(english == true)
+        {
+            command = new Command("go", "east");
+        
+        }
+        else
+        {
+            command = new Command("keliauti", "rytus");
+        }
+        
+        processCommand(command);
+    }
+    
+    private void south1 (MouseEvent evt) 
+    {
+        if(english == true)
+        {
+            command = new Command("go", "south");
+        }
+        else
+        {
+            command = new Command("keliauti", "pietus");
+        }
+            
+        processCommand(command);
+    }
+    
+    private void west1 (MouseEvent evt) 
+    {
+        if (english == true)
+        {
+            command = new Command("go", "west");
+        }
+        else
+        {
+            command = new Command("keliauti", "vakarus");
+        }
+        processCommand(command);
+    }
+    
+    private void english1 (MouseEvent evt) 
+    {
+        player = new Player("Default");
                 player.setStarting(home);
                 english = true;
                 printWelcome();
                 english1.setVisible(false);
                 lietuviu1.setVisible(false);
                 textarea1.setVisible(true);
-	}
-	
-	private void lietuviu1 (MouseEvent evt) 
-	{
-		player = new Player("Paprastas");
+                leave1.setVisible(true);
+    }
+    
+    private void lietuviu1 (MouseEvent evt) 
+    {
+        player = new Player("Paprastas");
                 player.setStarting(namai);
                 english = false;
                 printLabas();
                 english1.setVisible(false);
                 lietuviu1.setVisible(false);
                 textarea1.setVisible(true);
-	}
-	
-	private void help1 (MouseEvent evt) 
-	{
-	    printHelp();
-	    look();
-	}
+                leave1.setVisible(true);
+    }
+    
+    private void help1 (MouseEvent evt) 
+    {
+        printHelp();
+        look();
+    }
 
-	private void back1 (MouseEvent evt) 
-	{
-	    if (english == true)
-	    {
-	        command = new Command("back", null);
-	    }
-	    else
-	    {
-	        command = new Command("atgal", null);
-	    }
-	    processCommand(command);
-	    if(player.getCurrentRoom() == atlanticOcean||player.getCurrentRoom() == pacificOcean||player.getCurrentRoom() == indianOcean
-	    ||player.getCurrentRoom() == europe||player.getCurrentRoom() == america||player.getCurrentRoom() == australia||player.getCurrentRoom() == asia
-	    ||player.getCurrentRoom() == africa)
-	    {
-	        west1.setVisible(true);
-	        south1.setVisible(true);
-	        east1.setVisible(true);
-	        explore1.setVisible(true);
-	        north1.setVisible(true);
-	        moonshine1.setVisible(false);
-	        eat1.setVisible(false);
-	        mudding1.setVisible(false);
-	    }
-	}
+    private void back1 (MouseEvent evt) 
+    {
+        if (english == true)
+        {
+            command = new Command("back", null);
+        }
+        else
+        {
+            command = new Command("atgal", null);
+        }
+        processCommand(command);
+        if(player.getCurrentRoom() == atlanticOcean||player.getCurrentRoom() == pacificOcean||player.getCurrentRoom() == indianOcean
+        ||player.getCurrentRoom() == europe||player.getCurrentRoom() == america||player.getCurrentRoom() == australia||player.getCurrentRoom() == asia
+        ||player.getCurrentRoom() == africa)
+        {
+            west1.setVisible(true);
+            south1.setVisible(true);
+            east1.setVisible(true);
+            explore1.setVisible(true);
+            north1.setVisible(true);
+            moonshine1.setVisible(false);
+            eat1.setVisible(false);
+            mudding1.setVisible(false);
+        }
+        if (player.getCurrentRoom() == home || player.getCurrentRoom() == namai)
+        {
+            explore1.setVisible(false);
+            leave1.setVisible(true);
+            west1.setVisible(false);
+            south1.setVisible(false);
+            east1.setVisible(false);
+            explore1.setVisible(false);
+            
+        }
+    }
 
-	private void take1 (MouseEvent evt) 
-	{
-		//grabArtifact();
-                System.out.println();
-                System.out.println("So far in you inventory you have " + player.seeInventory() );
-	}
+    private void take1 (MouseEvent evt) 
+    {
+        //grabArtifact();
+        for (Artifact artifact : player.getCurrentRoom().getArtifactList())
+                {
+       
+                        if (!(artifact.getWeight() == -1))
+                        {
+                            if (player.grabArtifact(artifact))
+                            {
+                                if(english == true)
+                                {
+                                    command = new Command("grab", null);
+                                }
+                                else
+                                {
+                                    command = new Command("paimti", null);
+                                }
+                                processCommand(command);
+                            }
+                        }
+                    }
+    }
 
-	private void teleport1 (MouseEvent evt) {
-	    
-	}
+    private void teleport1 (MouseEvent evt) 
+    {
+        
+    }
 
-	public void generateMenu()
-	{
-		menuBar = new JMenuBar();
+    public void generateMenu()
+    {
+        menuBar = new JMenuBar();
 
-		JMenu game = new JMenu("Game");
-		JMenu help = new JMenu("Help");
+        JMenu game = new JMenu("Game");
+        JMenu help = new JMenu("Help");
 
-		JMenuItem newgame = new JMenuItem("New Game   ");
-		JMenuItem exit = new JMenuItem("Exit   ");
-		JMenuItem about = new JMenuItem("About   ");
+        JMenuItem newgame = new JMenuItem("New Game   ");
+        JMenuItem exit = new JMenuItem("Exit   ");
+        JMenuItem about = new JMenuItem("About   ");
 
 
-		game.add(newgame);
-		game.add(exit);
-		help.add(about);
+        game.add(newgame);
+        game.add(exit);
+        help.add(about);
 
-		menuBar.add(game);
-		menuBar.add(help);
-	}
-	
-	private void createRooms()
+        menuBar.add(game);
+        menuBar.add(help);
+    }
+    
+    private void createRooms()
         {
             
             home = new Room (" home where you have your safe with precious artifacts", 0);
@@ -888,13 +1098,21 @@ public class GUI extends JFrame {
             // Enter the main command loop.  Here we repeatedly read commands and
             // execute them until the game is over.
                     
-            boolean finished = false;
+            
             while (! finished) {
                 
                 Command command = parser.getCommand();
-                
-                
-                
+                boolean artifactInRoom = false;
+                 if (!player.getCurrentRoom().getArtifactList().equals(null))
+                {
+                    artifactInRoom = true;
+                    take1.setVisible(true);
+                }
+                else
+                {
+                    artifactInRoom = false;
+                    take1.setVisible(false);
+                }
                 if(command.hasSecondWord() == false)
                 {
                     userInput.add(command.getCommandWord());
@@ -981,7 +1199,7 @@ public class GUI extends JFrame {
                                 }
                                 else 
                                 {
-                                    System.out.println("You are trapped, you cannot go back!");
+                                    textarea1.append("You are trapped, you cannot go back!"+"\n");
                                 }
                             }
                         }
@@ -993,13 +1211,13 @@ public class GUI extends JFrame {
                         }
                         else if (commandWord.equals("grab")) {
                             //grabArtifact(command);
-                            System.out.println();
-                            System.out.println("So far in you inventory you have " + player.seeInventory() );
+                            textarea1.append("\n");
+                            textarea1.append("So far in you inventory you have " + player.seeInventory() +"\n");
                         }
                         else if (commandWord.equals("drop")) {
                             dropArtifact (command);
-                            System.out.println();
-                            System.out.println("Your inventory still contains " + player.seeInventory());
+                            textarea1.append("\n");
+                            textarea1.append("Your inventory still contains " + player.seeInventory()+"\n");
                         }
                         else if (commandWord.equals("back")) {
                             if (player.getCurrentRoom() != antarctica)
@@ -1010,7 +1228,7 @@ public class GUI extends JFrame {
                         
                                     --turns;
                                     player.goBack();
-                                    System.out.println("You are " + player.getCurrentRoom().getDescription());
+                                    textarea1.append("You are " + player.getCurrentRoom().getDescription()+"\n");
                                     look();
                     
                                 }
@@ -1021,7 +1239,7 @@ public class GUI extends JFrame {
                             }
                             else
                             {
-                                System.out.println("You are trapped, you cannot go back!");
+                                textarea1.append("You are trapped, you cannot go back!"+"\n");
                             }
                         }
                         else if (commandWord.equals("eat")) {
@@ -1072,7 +1290,7 @@ public class GUI extends JFrame {
                             }
                             else 
                             {
-                                System.out.println("Tu įstriges, negali pajudėt");
+                               textarea1.append("Tu įstriges, negali pajudėt"+"\n");
                             }
                         }
                     }
@@ -1084,13 +1302,13 @@ public class GUI extends JFrame {
                     }
                     else if (commandWord.equals("paimti")) {
                         //grabArtifact(command);
-                        System.out.println();
-                        System.out.println("Kurpinei tu turi " + player.seeInventory() );
+                        textarea1.append("\n");
+                        textarea1.append("Kurpinei tu turi " + player.seeInventory() +"\n" );
                     }
                     else if (commandWord.equals("padeti")) {
                         dropArtifact (command);
-                        System.out.println();
-                        System.out.println("Tavo kuprinei vis dar turi " + player.seeInventory());
+                        textarea1.append("\n");
+                        textarea1.append("Tavo kuprinei vis dar turi " + player.seeInventory()+"\n");
                     }
                     else if (commandWord.equals("atgal")) {
                         if (player.getCurrentRoom() != antarktida)
@@ -1101,7 +1319,7 @@ public class GUI extends JFrame {
                         
                                 --turns;
                                 player.goBack();
-                                System.out.println("Tu esi " + player.getCurrentRoom().getDescription());
+                                textarea1.append("Tu esi " + player.getCurrentRoom().getDescription()+"\n");
                                 look();
                     
                             }
@@ -1112,7 +1330,7 @@ public class GUI extends JFrame {
                         }
                         else
                         {
-                            System.out.println("Tu įstriges, negali pajudėt!");
+                            textarea1.append("Tu įstriges, negali pajudėt!"+"\n");
                         }
                     }
                     else if (commandWord.equals("valgyti")) {
@@ -1169,7 +1387,7 @@ public class GUI extends JFrame {
             "*********************************************************"+"\n");
             textarea1.append("*************Welcome to the World of Zuul!***************"+"\n");
             textarea1.append("World of Zuul is a new, incredibly boring adventure game."+"\n");
-            textarea1.append("*************Type 'help' if you need help.***************"+"\n");
+            textarea1.append("*************Pess 'help' if you need help.***************"+"\n");
             textarea1.append("---------------------------------------------------------"+"\n");
             textarea1.append("You have "+ turns + " turns to complete the task! Good Luck!"+"\n");
             textarea1.append("You are " + player.getCurrentRoom().getDescription()+"\n");
@@ -1179,15 +1397,14 @@ public class GUI extends JFrame {
         
         private void printLabas()
         {
-            System.out.println("*********************************************************");
-            System.out.println("*************Sveiki atvyke į Zuul žaidimą!****************");
-            System.out.println("*****Zuulo pasaulis yra kito lygio neidomus žaidimas******");
-            System.out.println("********Įrašyk 'pagalba' jeigu reikia pagalbos.***********");
-            System.out.println("---------------------------------------------------------");
-            System.out.println("Tau liko "+ turns + " ėjimų užbaigti žaidimą. Sekmės");
-            System.out.println("Tu esi " + player.getCurrentRoom().getDescription());
+            textarea1.append("*********************************************************"+"\n");
+            textarea1.append("*************Sveiki atvyke į Zuul žaidimą!****************"+"\n");
+            textarea1.append("*****Zuulo pasaulis yra kito lygio neidomus žaidimas******"+"\n");
+            textarea1.append("********Paspausk'pagalba' jeigu reikia pagalbos.***********"+"\n");
+            textarea1.append("---------------------------------------------------------"+"\n");
+            textarea1.append("Tau liko "+ turns + " ėjimų užbaigti žaidimą. Sekmės"+"\n");
+            textarea1.append("Tu esi " + player.getCurrentRoom().getDescription()+"\n");
             look();
-            System.out.println();
             english = false;
         }
         
@@ -1208,12 +1425,13 @@ public class GUI extends JFrame {
                     {
                         if (cookie.getArtifactName().equals("magic"))
                         {
-                            System.out.println(artifact + " In order to eat this artifact type 'eat " + player.getCurrentRoom().artifactNames() + " ' without []") ;
+                            textarea1.append(artifact + " In order to eat this coockie press 'Eat/Valgyti'" +"\n") ;
                         }
                        
                         else
                         {
-                            System.out.println(artifact + " In order to grab this artifact type 'grab " + player.getCurrentRoom().artifactNames() + " ' without []") ;
+                            take1.setVisible(true);
+                            textarea1.append(artifact + " In order to grab this artifact press 'grab " + "\n"+ player.getCurrentRoom().artifactNames() ) ;
                         }
                     }
                 
@@ -1333,7 +1551,7 @@ public class GUI extends JFrame {
                 }
                 if (player.getCurrentRoom().artifacts())
                 {
-                    textarea1.append("\n");
+                    
                     artifactsInRoom();
                 }
             }
@@ -1349,7 +1567,7 @@ public class GUI extends JFrame {
                 }
                 if (player.getCurrentRoom().artifacts())
                 {
-                    textarea1.append("\n");
+                    
                     artifactsInRoom();
                 }
             }
@@ -1763,13 +1981,13 @@ public class GUI extends JFrame {
             textarea1.append(string);
         }
     
-    	 public static void main(String[] args){
-    		System.setProperty("swing.defaultlaf", "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-    		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-    			public void run() {
-    				new GUI();
-    			}
-    		});
-    	}
+         public static void main(String[] args){
+            System.setProperty("swing.defaultlaf", "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+            javax.swing.SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    new GUI();
+                }
+            });
+        }
 
 }
