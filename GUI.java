@@ -20,15 +20,21 @@ import java.io.FileWriter;
 import java.util.Iterator;
 import java.io.*;
 import java.util.*;
+/**
+ * GUI class is responsible for main game running, with GUI interface. 
+ * 
+ * @author Donatas Vasauskas
+ * @version 04-05-2020-V1
+ */
 public class GUI extends JFrame {
 
     private JMenuBar menuBar;
     private JTextField commandField;
     private JPanel inventory1;
-    private JTextArea textarea1;
+    private JTextArea textarea1, textarea2;
     private JPanel mainPanel;
     protected JButton east1, north1, south1, west1, take1, teleport1, explore1, leave1, lietuviu1, help1, english1,
-    back1,mudding1,moonshine1, eat1 ;
+    back1,mudding1,moonshine1, eat1, continue1 ;
     
     private Parser parser;
         private Room currentRoom;
@@ -46,7 +52,10 @@ public class GUI extends JFrame {
         private Command command;
      
         boolean finished = false;
-    public GUI()
+    /**
+     * COnstructor to create GUI, and game itself.
+     */
+        public GUI()
     {
 
         this.setTitle("GUI");
@@ -87,7 +96,18 @@ public class GUI extends JFrame {
         textarea1.setBorder(BorderFactory.createBevelBorder(1));
         textarea1.setVisible(false);
         
+        textarea2 = new JTextArea();
+        textarea2.setBounds(5,160,585,100);
+        textarea2.setBackground(new Color(255,255,255));
+        textarea2.setForeground(new Color(0,0,0));
+        textarea2.setEnabled(true);
+        textarea2.setFont(new Font("sansserif",0,12));
+        textarea2.setText("Inventory: ");
+        textarea2.setBorder(BorderFactory.createBevelBorder(1));
+        textarea2.setVisible(false);
+        
         mainPanel.add(textarea1);
+        mainPanel.add(textarea2);
         
         inventory1 = new JPanel(null);
         inventory1.setBorder(BorderFactory.createEtchedBorder(1));
@@ -318,6 +338,23 @@ public class GUI extends JFrame {
             }
         }
         );
+        
+        continue1 = new JButton();
+        continue1.setBounds(330,460,110,35);
+        continue1.setBackground(new Color(214,217,223));
+        continue1.setForeground(new Color(0,0,0));
+        continue1.setEnabled(true);
+        continue1.setFont(new Font("sansserif",0,12));
+        continue1.setText("Continue/Toliau");
+        continue1.setVisible(false);
+        continue1.addMouseListener(new MouseAdapter() 
+        {
+            public void mouseClicked(MouseEvent evt) 
+            {
+                continue1(evt);
+            }
+        }
+        );
 
         take1 = new JButton();
         take1.setBounds(130,385,110,35);
@@ -370,6 +407,7 @@ public class GUI extends JFrame {
         contentPane.add(west1);
         contentPane.add(back1);
         contentPane.add(teleport1);
+        contentPane.add(continue1);
         
         contentPane.add(take1);
         contentPane.add(mudding1);
@@ -387,29 +425,49 @@ public class GUI extends JFrame {
                 turns = 30;
     }
     
-    private void printTextOnPanel (ActionEvent evt) 
+    /**
+     * Method when button clicked runs continue command.
+     * @param evt is MouseEvent whenever we click mouse button on jbutton
+     */
+    private void continue1 (MouseEvent evt) 
     {
+        if( english == true)
+        {
+            command = new Command("go", "continue");
+        }
+        else
+        {
+            command = new Command("keliauti", "toliau");
+        }
         
+            leave1.setVisible(false);
+            explore1.setVisible(true);
+            north1.setVisible(true);
+            east1.setVisible(true);
+            south1.setVisible(true);
+            west1.setVisible(true);
+            back1.setVisible(true);
+            textarea2.setVisible(true);
+            textarea2.setText("Inventory: ");
+            textarea2.append(player.seeInventory());
+            processCommand(command);
     }
     
+    /**
+     * Method when button clicked runs leave command.
+     * @param evt is MouseEvent whenever we click mouse button on jbutton
+     */
     private void leave1 (MouseEvent evt) 
     {
         if( english == true)
         {
             command = new Command("go", "leave");
-            leave1.setVisible(false);
-            explore1.setVisible(true);
-            north1.setVisible(true);
-            east1.setVisible(true);
-            south1.setVisible(true);
-            west1.setVisible(true);
-            back1.setVisible(true);
-            processCommand(command);
-            
         }
         else
         {
             command = new Command("keliauti", "iseiti");
+        }
+        
             leave1.setVisible(false);
             explore1.setVisible(true);
             north1.setVisible(true);
@@ -418,9 +476,14 @@ public class GUI extends JFrame {
             west1.setVisible(true);
             back1.setVisible(true);
             processCommand(command);
-        }
+            textarea2.setVisible(true);
+            textarea2.append(player.seeInventory());
     }
     
+    /**
+     * Method when button clicked runs explore command.
+     * @param evt is MouseEvent whenever we click mouse button on jbutton
+     */
     private void explore1 (MouseEvent evt) 
     {
         if(english == true)
@@ -453,6 +516,10 @@ public class GUI extends JFrame {
         }
     }
     
+    /**
+     * Method when button clicked runs north command.
+     * @param evt is MouseEvent whenever we click mouse button on jbutton
+     */
     private void north1 (MouseEvent evt) 
     {
         if(english == true)
@@ -466,6 +533,11 @@ public class GUI extends JFrame {
             processCommand(command);
     }
     
+    /**
+     * Method when button clicked runs mudding/option1 command
+     * Depending on the room option gives different command
+     * @param evt is MouseEvent whenever we click mouse button on jbutton
+     */
     private void mudding1 (MouseEvent evt) 
     {
             if (player.getCurrentRoom() == exploreAmerica)
@@ -537,10 +609,20 @@ public class GUI extends JFrame {
                 command = new Command("go", "boat");
             }
             take1.setVisible(true);
+            eat1.setVisible(false);
+            moonshine1.setVisible(false);
+            mudding1.setVisible(false);
+            continue1.setVisible(true);
+            take1.setVisible(true);
             processCommand(command);
         
     }
     
+    /**
+     * Method when button clicked runs moonshine/Option 2 command
+     * Depending on the room option gives different command
+     * @param evt is MouseEvent whenever we click mouse button on jbutton
+     */
     private void moonshine1 (MouseEvent evt) 
     {
        if (player.getCurrentRoom() == exploreAmerica)
@@ -613,16 +695,26 @@ public class GUI extends JFrame {
        {
            command = new Command("keliauti", "prie-blizgucio");
        }
-        processCommand(command);
+       take1.setVisible(true);
+        eat1.setVisible(false);
+        moonshine1.setVisible(false);
+        mudding1.setVisible(false);
+        continue1.setVisible(true); 
+       processCommand(command);
+        
     }
     
+    /**
+     * Method when button clicked runs eat / Option 3 command
+     * Depending on the room option gives different command
+     * @param evt is MouseEvent whenever we click mouse button on jbutton
+     */
     private void eat1 (MouseEvent evt) 
     {
        if (player.getCurrentRoom() == exploreAmerica)
         {
             
             command = new Command("go", "eat");
-        
             processCommand(command);
         }
        if (player.getCurrentRoom() == diveAtlantic)
@@ -632,8 +724,17 @@ public class GUI extends JFrame {
         
             processCommand(command);
         }
+        take1.setVisible(true);
+        eat1.setVisible(false);
+        moonshine1.setVisible(false);
+        mudding1.setVisible(false);
+        continue1.setVisible(true);
     }
     
+    /**
+     * Method when button clicked runs east command.
+     * @param evt is MouseEvent whenever we click mouse button on jbutton
+     */
     private void east1 (MouseEvent evt) 
     {
         if(english == true)
@@ -649,6 +750,10 @@ public class GUI extends JFrame {
         processCommand(command);
     }
     
+    /**
+     * Method when button clicked runs south command.
+     * @param evt is MouseEvent whenever we click mouse button on jbutton
+     */
     private void south1 (MouseEvent evt) 
     {
         if(english == true)
@@ -663,6 +768,10 @@ public class GUI extends JFrame {
         processCommand(command);
     }
     
+    /**
+     * Method when button clicked runs west command.
+     * @param evt is MouseEvent whenever we click mouse button on jbutton
+     */
     private void west1 (MouseEvent evt) 
     {
         if (english == true)
@@ -676,6 +785,10 @@ public class GUI extends JFrame {
         processCommand(command);
     }
     
+    /**
+     * Method when button clicked runs english command for English game version.
+     * @param evt is MouseEvent whenever we click mouse button on jbutton
+     */
     private void english1 (MouseEvent evt) 
     {
         player = new Player("Default");
@@ -688,6 +801,10 @@ public class GUI extends JFrame {
                 leave1.setVisible(true);
     }
     
+    /**
+     * Method when button clicked runs lietuviu command for Lithuanian game version.
+     * @param evt is MouseEvent whenever we click mouse button on jbutton
+     */
     private void lietuviu1 (MouseEvent evt) 
     {
         player = new Player("Paprastas");
@@ -700,12 +817,20 @@ public class GUI extends JFrame {
                 leave1.setVisible(true);
     }
     
+    /**
+     * Method when button clicked runs help command.
+     * @param evt is MouseEvent whenever we click mouse button on jbutton
+     */
     private void help1 (MouseEvent evt) 
     {
         printHelp();
         look();
     }
-
+    
+    /**
+     * Method when button clicked runs back command.
+     * @param evt is MouseEvent whenever we click mouse button on jbutton
+     */
     private void back1 (MouseEvent evt) 
     {
         if (english == true)
@@ -741,7 +866,11 @@ public class GUI extends JFrame {
             
         }
     }
-
+    
+    /**
+     * Method when button clicked runs take/grab command.
+     * @param evt is MouseEvent whenever we click mouse button on jbutton
+     */
     private void take1 (MouseEvent evt) 
     {
         //grabArtifact();
@@ -765,12 +894,19 @@ public class GUI extends JFrame {
                         }
                     }
     }
-
+    
+    /**
+     * Method when button clicked runs teleport command.
+     * @param evt is MouseEvent whenever we click mouse button on jbutton
+     */
     private void teleport1 (MouseEvent evt) 
     {
         
     }
-
+    
+    /**
+     * Method to generate mmenu bar. Still in progress
+     */
     public void generateMenu()
     {
         menuBar = new JMenuBar();
@@ -791,6 +927,9 @@ public class GUI extends JFrame {
         menuBar.add(help);
     }
     
+    /**
+     * Method to create rooms for the Zuul game
+     */
     private void createRooms()
         {
             
